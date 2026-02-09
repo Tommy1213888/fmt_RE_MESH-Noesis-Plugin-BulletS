@@ -11,6 +11,8 @@
 ## ✨ 特性
 
 - 支持 **Monster Hunter Wilds** 正式版动画（`.motlist.992`）
+- 支持 **Monster Hunter Stories 3: Twisted Reflection Trial** 模型和动画（`.mesh.250604100`, `.motlist.1004`）
+- 支持 **Pragmata** 模型和动画（`.mesh.250925211`, `.motlist.1057`）
 - 完整的动画压缩算法解码支持
 
 ## 🎮 支持游戏
@@ -20,10 +22,12 @@
 | Resident Evil 2/3/4/7/8 Remake | ✅ |
 | Devil May Cry 5 | ✅ |
 | Monster Hunter Rise / Wilds | ✅ |
+| Monster Hunter Stories 3 | ✅ |
 | Street Fighter 6 | ✅ |
 | Dragon's Dogma 2 | ✅ |
 | ExoPrimal | ✅ |
 | Apollo Justice: Ace Attorney Trilogy | ✅ |
+| Pragmata | ✅ |
 
 ## 📦 安装
 
@@ -50,6 +54,7 @@
 - [alphazolam](https://github.com/alphazolam/fmt_RE_MESH-Noesis-Plugin) - 原仓库作者
 - [Gh0stblade](https://github.com/Gh0stblade) - 初版插件作者
 - [RE-Engine-Lib](https://github.com/czastack/RE-Engine-Lib) - 动画压缩算法参考
+- [RE-Engine-Lib](https://github.com/kagenocookie/RE-Engine-Lib) - 动画压缩算法参考
 
 ## 📬 反馈
 

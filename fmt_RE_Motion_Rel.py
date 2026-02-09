@@ -27,8 +27,9 @@ bExoExport					= True					#Enable or disable export of mesh.220907984 from the e
 bApolloExport				= True					#Enable or disable export of mesh.230612127 from the export list (and tex.719230324)
 bDD2Export					= True					#Enable or disable export of mesh.231011879 from the export list (and tex.760230703)
 bDRDRExport					= True					#Enable or disable export of mesh.240424828 from the export list (and tex.240606151)
-
-bMHWsExport = True
+bMHWsExport					= True					#Enable or disable export of mesh.240820143 from the export list (and tex.240701001)
+bMHS3Export					= True					#Enable or disable export of mesh.250604100 from the export list (and tex.251111100)
+bPragmataExport				= True					#Enable or disable export of mesh.250925211 from the export list (and tex.250813143)
 
 #Mesh Global
 fDefaultMeshScale 			= 100.0 				#Override mesh scale (default is 1.0)
@@ -106,7 +107,7 @@ def registerNoesisTypes():
 		noesis.addOption(handle, "-vfx", "Export as VFX mesh", 0)
 		return handle
 		
-	handle = noesis.register("RE Engine MESH [PC]", ".1902042334;.1808312334;.1808282334;.2008058288;.2102020001;.2101050001;.2109108288;.2109148288;.220128762;.220301866;.220721329;.221108797;.220907984;.230110883;.230612127;.231011879;.240424828;.NewMesh")
+	handle = noesis.register("RE Engine MESH [PC]", ".1902042334;.1808312334;.1808282334;.2008058288;.2102020001;.2101050001;.2109108288;.2109148288;.220128762;.220301866;.220721329;.221108797;.220907984;.230110883;.230612127;.231011879;.240424828;.240820143;.250604100;.250925211;.NewMesh")
 	noesis.setHandlerTypeCheck(handle, meshCheckType)
 	noesis.setHandlerLoadModel(handle, meshLoadModel)
 	noesis.addOption(handle, "-noprompt", "Do not prompt for MDF file", 0)
@@ -124,7 +125,7 @@ def registerNoesisTypes():
 	noesis.setHandlerTypeCheck(handle, SCNCheckType)
 	noesis.setHandlerLoadModel(handle, SCNLoadModel)
 	
-	handle = noesis.register("RE Engine MOTLIST [PC]", ".60;.85;.99;.484;.486;.500;.524;.528;.643;.653;.663;.750;.751;.851;.854;.992")
+	handle = noesis.register("RE Engine MOTLIST [PC]", ".60;.85;.99;.484;.486;.500;.524;.528;.643;.653;.663;.750;.751;.851;.854;.992;.1004;.1057")
 	noesis.setHandlerTypeCheck(handle, motlistCheckType)
 	noesis.setHandlerLoadModel(handle, motlistLoadModel)
 
@@ -275,6 +276,23 @@ def registerNoesisTypes():
 		noesis.setHandlerWriteModel(handle, meshWriteModel)
 		addOptions(handle)
 		
+	if bMHS3Export:
+		handle = noesis.register("Monster Hunter Stories 3 Texture [PC]", ".251111100")
+		noesis.setHandlerTypeCheck(handle, texCheckType)
+		noesis.setHandlerWriteRGBA(handle, texWriteRGBA)
+		handle = noesis.register("Monster Hunter Stories 3 Mesh", (".250604100"))
+		noesis.setHandlerTypeCheck(handle, meshCheckType)
+		noesis.setHandlerWriteModel(handle, meshWriteModel)
+		addOptions(handle)
+		
+	if bPragmataExport:
+		handle = noesis.register("Pragmata Texture [PC]", ".250813143")
+		noesis.setHandlerTypeCheck(handle, texCheckType)
+		noesis.setHandlerWriteRGBA(handle, texWriteRGBA)
+		handle = noesis.register("Pragmata Mesh", (".250925211"))
+		noesis.setHandlerTypeCheck(handle, meshCheckType)
+		noesis.setHandlerWriteModel(handle, meshWriteModel)
+		addOptions(handle)
 		
 	noesis.logPopup()
 	return 1
@@ -308,6 +326,8 @@ formats = {
 	"DD2": 			{ "modelExt": ".231011879",  "texExt": ".760230703", "mmtrExt": ".230815080",  "nDir": "stm", "mdfExt": ".mdf2.40", "meshVersion": 3, "mdfVersion": 4, "mlistExt": ".751", "meshMagic":230517984, "motionIDsData":[72,8] },
 	"DRDR": 		{ "modelExt": ".240424828",  "texExt": ".240606151", "mmtrExt": ".240405143",  "nDir": "stm", "mdfExt": ".mdf2.40", "meshVersion": 3, "mdfVersion": 4, "mlistExt": ".854", "meshMagic":240423829, "motionIDsData":[72,8] },
 	"MHWs": 		{"modelExt": ".240820143",  "texExt": ".760230703", "mmtrExt": ".240718143",  "nDir": "stm", "mdfExt": ".mdf2.45", "meshVersion": 3, "mdfVersion": 4, "mlistExt": ".992", "meshMagic": 240704828, "motionIDsData": [72, 8]},
+	"MHS3": 		{"modelExt": ".250604100",  "texExt": ".251111100", "mmtrExt": ".250604100",  "nDir": "stm", "mdfExt": ".mdf2.49", "meshVersion": 3, "mdfVersion": 4, "mlistExt": ".1004", "meshMagic": 0, "motionIDsData": [72, 8]},
+	"Pragmata": 	{"modelExt": ".250925211",  "texExt": ".250813143", "mmtrExt": ".250925211",  "nDir": "STM", "mdfExt": ".mdf2.51", "meshVersion": 3, "mdfVersion": 4, "mlistExt": ".1057", "meshMagic": 250707828, "motionIDsData": [72, 8]},
 }
 
 extToFormat = { #incomplete, just testing
@@ -1406,7 +1426,7 @@ dialogOptions = DialogOptions()
 
 DoubleClickTimer = namedtuple("DoubleClickTimer", "name idx timer")
 
-gamesList = [ "RE7", "RE7RT", "RE2", "RERT", "RE3", "RE4", "RE8", "MHRSunbreak", "DMC5", "SF6", "ReVerse", "ExoPrimal", "AJ_AAT", "DD2", "DRDR", "MHWs" ]
+gamesList = [ "RE7", "RE7RT", "RE2", "RERT", "RE3", "RE4", "RE8", "MHRSunbreak", "DMC5", "SF6", "ReVerse", "ExoPrimal", "AJ_AAT", "DD2", "DRDR", "MHWs", "MHS3", "Pragmata" ]
 fullGameNames = [
 	"Resident Evil 7",
 	"Resident Evil 7 RT",
@@ -1424,6 +1444,8 @@ fullGameNames = [
 	"Dragon's Dogma 2",
 	"Dead Rising DR",
 	"MHWs",
+	"Monster Hunter Stories 3",
+	"Pragmata",
 ]
 		
 class openOptionsDialogImportWindow:
@@ -2167,7 +2189,7 @@ def SCNLoadModel(data, mdlList):
 	fName = rapi.getInputName().upper()
 	guessedName = "RE8" if "RE8" in fName else "RE7" if "RE7" in fName else "RE2" if "RE2" in fName else "RE3" if "RE3" in fName else "RE7" if "RE7" in fName \
 	else "SF6" if "SF6" in fName else "MHRise" if "MHRISE" in fName else "RE4" if "RE4" in fName else "ExoPrimal" if ("EXO" in fName or "EXP" in fName) else "DMC5" if "DMC5" in fName \
-	else "DD2" if "DD2" in fName else "DRDR" if "DRDR" in fName else "MHWs" if "MHWs" in fName else "AJ_AAT"
+	else "DD2" if "DD2" in fName else "DRDR" if "DRDR" in fName else "MHWs" if "MHWs" in fName else "MHS3" if "MHS3" in fName else "Pragmata" if "PRAG" in fName else "AJ_AAT"
 	guessedName = guessedName + "RT" if (guessedName + "RT") in fName else guessedName
 	
 	msg = ''.join([name + ", " for name, formatList in formats.items()])
@@ -3126,6 +3148,9 @@ class motlistFile:
 		motionIDsOffset = bs.readUInt64()
 		self.name = readUnicodeStringAt(bs, bs.readUInt64())
 		bs.seek(8, 1)
+		# Pragmata (1057) and later have an extra 8-byte field before numOffsets
+		if self.version >= 1057:
+			bs.seek(8, 1)  # Skip uknOffset
 		numOffsets = bs.readUInt()
 		bs.seek(pointersOffset)
 		self.motionIDs = {}
@@ -3289,7 +3314,7 @@ def setOffsets(ver):
 	bsIndicesOffLocation = 		112 if ver < 3 else 128
 	namesOffsLocation = 		120 if ver < 3 else 144
 	
-	if sGameName == "AJ_AAT" or sGameName == "DD2" or sGameName == "DRDR" or sGameName == "MHWs":
+	if sGameName == "AJ_AAT" or sGameName == "DD2" or sGameName == "DRDR" or sGameName == "MHWs" or sGameName == "MHS3":
 		namesOffsLocation = 136 # on unrigged meshes its still 144
 	#if isExoPrimal:
 	#	nodesIndicesOffsLocation = 104
@@ -3373,6 +3398,15 @@ class meshFile(object):
 		elif (meshVersion == 240704828 or self.path.find(".240820143") != -1):  # MHWs
 			isMeshVer3 = True
 			sGameName = "MHWs"
+		elif (meshVersion == 250203152 or self.path.find(".250604100") != -1):  # MHS3
+			isMeshVer3 = False  # MHS3 uses custom header layout
+			sGameName = "MHS3"
+		elif (meshVersion == 250707828 or self.path.find(".250925211") != -1):  # Pragmata
+			isMeshVer3 = True
+			sGameName = "Pragmata"
+		elif self.path.find(".250604100") != -1:  # MHS3 (meshMagic is 0, detect by extension)
+			isMeshVer3 = True
+			sGameName = "MHS3"
 		
 	'''MDF IMPORT ========================================================================================================================================================================'''
 	def createMaterials(self, matCount):
@@ -4006,6 +4040,8 @@ class meshFile(object):
 		
 		vertElemCountA = bs.readUShort()
 		vertElemCountB = bs.readUShort()
+		if sGameName == "Pragmata" or sGameName == "MHS3":
+			bs.seek(16, 1) # Pragmata version has extra 16 bytes padding here
 		faceBufferSize2nd = bs.readUInt64()
 		blendshapesOffset = bs.readUInt()
 		
@@ -4741,6 +4777,12 @@ def meshWriteModel(mdl, bs):
 	elif ext.find(".240820143") != -1:
 		sGameName = "MHWs"
 		isMeshVer3 = True
+	elif ext.find(".250604100") != -1:
+		sGameName = "MHS3"
+		isMeshVer3 = False  # MHS3 uses custom Ver2-like layout
+	elif ext.find(".250925211") != -1:
+		sGameName = "Pragmata"
+		isMeshVer3 = True
 	elif ext.find(".240424828") != -1:
 		sGameName = "DRDR"
 		isMeshVer3 = True
@@ -4996,7 +5038,7 @@ def meshWriteModel(mdl, bs):
 			f.seek(232)
 			if sGameName == "AJ_AAT" or sGameName == "DD2" or sGameName == "DRDR" or sGameName == "MHWs":
 				f.seek(f.readUInt64())
-		elif sGameName == "RERT" or sGameName == "ReVerse" or sGameName == "MHRise" or sGameName == "RE8":
+		elif sGameName == "RERT" or sGameName == "ReVerse" or sGameName == "MHRise" or sGameName == "RE8" or sGameName == "MHS3":
 			f.seek(192)
 		else:
 			f.seek(200)
@@ -5124,7 +5166,7 @@ def meshWriteModel(mdl, bs):
 		
 		#print(newMainMeshes)
 		
-		LOD1Offs = 176 if (sGameName == "DD2" or sGameName == "AJ_AAT" or sGameName == "DRDR" or sGameName == "MHWs") else 168 if isMeshVer3 else 128 if (sGameName == "RERT" or sGameName == "RE8" or sGameName == "MHRise") else 136
+		LOD1Offs = 176 if (sGameName == "DD2" or sGameName == "AJ_AAT" or sGameName == "DRDR" or sGameName == "MHWs") else 168 if isMeshVer3 else 128 if (sGameName == "RERT" or sGameName == "RE8" or sGameName == "MHRise" or sGameName == "MHS3") else 136
 		
 		#header:
 		bs.writeUInt(1213416781) #MESH
@@ -5135,7 +5177,7 @@ def meshWriteModel(mdl, bs):
 		
 		if isMeshVer3:
 			bs.writeUByte(3) #flag
-			if sGameName == "DD2" or sGameName == "AJ_AAT" or sGameName == "DRDR" or sGameName == "MHWs":
+			if sGameName == "DD2" or sGameName == "AJ_AAT" or sGameName == "DRDR" or sGameName == "MHWs" or sGameName == "MHS3":
 				bs.writeUByte(130) #solvedOffset
 				bs.writeUShort(84) #uknSF6
 			else:
@@ -5160,7 +5202,7 @@ def meshWriteModel(mdl, bs):
 			bs.writeUInt64(0) #namesOffs
 			bs.writeUInt64(0) #verticesOffset
 			bs.writeUInt64(0) #ukn4/padding
-			if sGameName == "DD2" or sGameName == "MHWs":
+			if sGameName == "DD2" or sGameName == "MHWs" or sGameName == "MHS3":
 				bs.writeUInt64(0) #ukn5/padding
 			
 		else:

@@ -27,8 +27,9 @@ bExoExport					= True					#Enable or disable export of mesh.220907984 from the e
 bApolloExport				= True					#Enable or disable export of mesh.230612127 from the export list (and tex.719230324)
 bDD2Export					= True					#Enable or disable export of mesh.231011879 from the export list (and tex.760230703)
 bDRDRExport					= True					#Enable or disable export of mesh.240424828 from the export list (and tex.240606151)
-
-bMHWsExport = True
+bMHWsExport					= True					#Enable or disable export of mesh.240820143 from the export list (and tex.240701001)
+bMHS3Export					= True					#Enable or disable export of mesh.250604100 from the export list (and tex.251111100)
+bPragmataExport				= True					#Enable or disable export of mesh.250925211 from the export list (and tex.250813143)
 
 #Mesh Global
 fDefaultMeshScale 			= 100.0 				#Override mesh scale (default is 1.0)
@@ -308,6 +309,8 @@ formats = {
 	"DD2": 			{ "modelExt": ".231011879",  "texExt": ".760230703", "mmtrExt": ".230815080",  "nDir": "stm", "mdfExt": ".mdf2.40", "meshVersion": 3, "mdfVersion": 4, "mlistExt": ".751", "meshMagic":230517984, "motionIDsData":[72,8] },
 	"DRDR": 		{ "modelExt": ".240424828",  "texExt": ".240606151", "mmtrExt": ".240405143",  "nDir": "stm", "mdfExt": ".mdf2.40", "meshVersion": 3, "mdfVersion": 4, "mlistExt": ".854", "meshMagic":240423829, "motionIDsData":[72,8] },
 	"MHWs": 		{"modelExt": ".240820143",  "texExt": ".760230703", "mmtrExt": ".240718143",  "nDir": "stm", "mdfExt": ".mdf2.45", "meshVersion": 3, "mdfVersion": 4, "mlistExt": ".992", "meshMagic": 240704828, "motionIDsData": [72, 8]},
+	"MHS3": 		{"modelExt": ".250604100",  "texExt": ".251111100", "mmtrExt": ".250604100",  "nDir": "stm", "mdfExt": ".mdf2.49", "meshVersion": 3, "mdfVersion": 4, "mlistExt": ".1004", "meshMagic": 0, "motionIDsData": [72, 8]},
+	"Pragmata": 	{"modelExt": ".250925211",  "texExt": ".250813143", "mmtrExt": ".250925211",  "nDir": "STM", "mdfExt": ".mdf2.51", "meshVersion": 3, "mdfVersion": 4, "mlistExt": ".1057", "meshMagic": 250707828, "motionIDsData": [72, 8]},
 }
 
 extToFormat = { #incomplete, just testing
@@ -1406,7 +1409,7 @@ dialogOptions = DialogOptions()
 
 DoubleClickTimer = namedtuple("DoubleClickTimer", "name idx timer")
 
-gamesList = [ "RE7", "RE7RT", "RE2", "RERT", "RE3", "RE4", "RE8", "MHRSunbreak", "DMC5", "SF6", "ReVerse", "ExoPrimal", "AJ_AAT", "DD2", "DRDR", "MHWs" ]
+gamesList = [ "RE7", "RE7RT", "RE2", "RERT", "RE3", "RE4", "RE8", "MHRSunbreak", "DMC5", "SF6", "ReVerse", "ExoPrimal", "AJ_AAT", "DD2", "DRDR", "MHWs", "MHS3", "Pragmata" ]
 fullGameNames = [
 	"Resident Evil 7",
 	"Resident Evil 7 RT",
@@ -1424,6 +1427,8 @@ fullGameNames = [
 	"Dragon's Dogma 2",
 	"Dead Rising DR",
     "MHWs",
+    "Monster Hunter Stories 3",
+    "Pragmata",
 ]
 		
 class openOptionsDialogImportWindow:
@@ -3126,6 +3131,9 @@ class motlistFile:
 		motionIDsOffset = bs.readUInt64()
 		self.name = readUnicodeStringAt(bs, bs.readUInt64())
 		bs.seek(8, 1)
+		# Pragmata (1057) and later have an extra 8-byte field before numOffsets
+		if self.version >= 1057:
+			bs.seek(8, 1)  # Skip uknOffset
 		numOffsets = bs.readUInt()
 		bs.seek(pointersOffset)
 		self.motionIDs = {}
