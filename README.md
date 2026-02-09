@@ -8,13 +8,6 @@
 
 ---
 
-## ✨ 特性
-
-- 支持 **Monster Hunter Wilds** 正式版动画（`.motlist.992`）
-- 支持 **Monster Hunter Stories 3: Twisted Reflection Trial** 模型和动画（`.mesh.250604100`, `.motlist.1004`）
-- 支持 **Pragmata** 模型和动画（`.mesh.250925211`, `.motlist.1057`）
-- 完整的动画压缩算法解码支持
-
 ## 🎮 支持游戏
 
 | 游戏 | 状态 |
