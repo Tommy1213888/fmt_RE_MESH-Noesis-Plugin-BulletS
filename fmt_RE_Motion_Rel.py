@@ -28,9 +28,9 @@ bSF6Export					= True					#Enable or disable export of mesh.230110883 from the e
 bRE4Export					= True					#Enable or disable export of mesh.221108797 from the export list (and tex.143221013)
 bExoExport					= True					#Enable or disable export of mesh.220907984 from the export list (and tex.40)
 bApolloExport				= True					#Enable or disable export of mesh.230612127 from the export list (and tex.719230324)
-bDD2Export					= True					#Enable or disable export of mesh.231011879 from the export list (and tex.760230703)
+bDD2Export					= True					#Enable or disable export of mesh.240423143 from the export list (and tex.760230703)
 bDRDRExport					= True					#Enable or disable export of mesh.240424828 from the export list (and tex.240606151)
-bMHWsExport					= True					#Enable or disable export of mesh.240820143 from the export list (and tex.240701001)
+bMHWsExport					= True					#Enable or disable export of mesh.241111606 from the export list (and tex.241106027)
 bMHS3Export					= True					#Enable or disable export of mesh.250604100 from the export list (and tex.251111100)
 bRE9Export					= True					#Enable or disable export of RE9 mesh.250925211 from the export list (and tex.250813143)
 bPragmataExport				= True					#Enable or disable export of mesh.250925211 from the export list (and tex.250813143)
@@ -112,13 +112,13 @@ def registerNoesisTypes():
 		noesis.addOption(handle, "-vfx", "Export as VFX mesh", 0)
 		return handle
 		
-	handle = noesis.register("RE Engine MESH [PC]", ".1902042334;.1808312334;.1808282334;.2008058288;.2102020001;.2101050001;.2109108288;.2109148288;.220128762;.220301866;.220721329;.221108797;.220907984;.230110883;.230612127;.231011879;.240424828;.240820143;.250604100;.250925211;.NewMesh")
+	handle = noesis.register("RE Engine MESH [PC]", ".1902042334;.1808312334;.1808282334;.2008058288;.2102020001;.2101050001;.2109108288;.2109148288;.220128762;.220301866;.220721329;.221108797;.220907984;.230110883;.230612127;.240423143;.231011879;.240424828;.241111606;.240820143;.250604100;.250925211;.NewMesh")
 	noesis.setHandlerTypeCheck(handle, meshCheckType)
 	noesis.setHandlerLoadModel(handle, meshLoadModel)
 	noesis.addOption(handle, "-noprompt", "Do not prompt for MDF file", 0)
 	noesis.setTypeSharedModelFlags(handle, (noesis.NMSHAREDFL_WANTGLOBALARRAY))
 
-	handle = noesis.register("RE Engine Texture [PC]", ".10;.190820018;.11;.8;.28;.stm;.30;.31;.34;.35;.36;.40;.143221013;.143230113;.719230324;.760230703;.240606151")
+	handle = noesis.register("RE Engine Texture [PC]", ".10;.190820018;.11;.8;.28;.stm;.30;.31;.34;.35;.36;.40;.143221013;.143230113;.719230324;.760230703;.240606151;.241106027;.251111100;.250813143")
 	noesis.setHandlerTypeCheck(handle, texCheckType)
 	noesis.setHandlerLoadRGBA(handle, texLoadDDS)
 
@@ -259,7 +259,7 @@ def registerNoesisTypes():
 		handle = noesis.register("Dragon's Dogma 2 Texture [PC]", ".760230703")
 		noesis.setHandlerTypeCheck(handle, texCheckType)
 		noesis.setHandlerWriteRGBA(handle, texWriteRGBA);
-		handle = noesis.register("Dragon's Dogma 2 Mesh", (".231011879"))
+		handle = noesis.register("Dragon's Dogma 2 Mesh", (".240423143"))
 		noesis.setHandlerTypeCheck(handle, meshCheckType)
 		noesis.setHandlerWriteModel(handle, meshWriteModel)
 		addOptions(handle)
@@ -274,10 +274,10 @@ def registerNoesisTypes():
 		#addOptions(handle)
 
 	if bMHWsExport:
-		handle = noesis.register("MHWs Texture [PC]", ".240701001")
+		handle = noesis.register("MHWs Texture [PC]", ".241106027")
 		noesis.setHandlerTypeCheck(handle, texCheckType)
 		noesis.setHandlerWriteRGBA(handle, texWriteRGBA)
-		handle = noesis.register("MHWs Mesh", (".240820143"))
+		handle = noesis.register("MHWs Mesh", (".241111606"))
 		noesis.setHandlerTypeCheck(handle, meshCheckType)
 		noesis.setHandlerWriteModel(handle, meshWriteModel)
 		addOptions(handle)
@@ -339,17 +339,17 @@ formats = {
 	"MHRSunbreak":	{ "modelExt": ".2109148288", "texExt": ".28", 		 "mmtrExt": ".220427553",  "nDir": "stm", "mdfExt": ".mdf2.23", "meshVersion": 2, "mdfVersion": 3, "mlistExt": ".528", "meshMagic":21091000, "motionIDsData":[72,8] },
 	"ReVerse":		{ "modelExt": ".2102020001", "texExt": ".31", 		 "mmtrExt": ".2108110001", "nDir": "stm", "mdfExt": ".mdf2.20", "meshVersion": 2, "mdfVersion": 3, "mlistExt": ".500", "meshMagic":2020091500, "motionIDsData":[24,8] },
 	"RERT": 		{ "modelExt": ".2109108288", "texExt": ".34", 		 "mmtrExt": ".2109101635", "nDir": "stm", "mdfExt": ".mdf2.21", "meshVersion": 2, "mdfVersion": 3, "mlistExt": ".524", "meshMagic":21041600, "motionIDsData":[72,8] },
-	"RE7RT": 		{ "modelExt": ".220128762",  "texExt": ".35", 		 "mmtrExt": ".2109101635", "nDir": "stm", "mdfExt": ".mdf2.21", "meshVersion": 2, "mdfVersion": 3, "mlistExt": ".524", "meshMagic":21041600, "motionIDsData":[72,8] },
+	"RE7RT": 		{ "modelExt": ".220128762",  "texExt": ".35", 		 "mmtrExt": ".220128762",  "nDir": "stm", "mdfExt": ".mdf2.21", "meshVersion": 2, "mdfVersion": 3, "mlistExt": ".524", "meshMagic":21041600, "motionIDsData":[72,8] },
 	"SF6": 			{ "modelExt": ".230110883",  "texExt": ".143230113", "mmtrExt": ".221102761",  "nDir": "stm", "mdfExt": ".mdf2.31", "meshVersion": 3, "mdfVersion": 4, "mlistExt": ".653", "meshMagic":230403828, "motionIDsData":[72,8] },
 	"ExoPrimal": 	{ "modelExt": ".220907984",  "texExt": ".40", 		 "mmtrExt": ".221007878",  "nDir": "stm", "mdfExt": ".mdf2.31", "meshVersion": 3, "mdfVersion": 4, "mlistExt": ".643", "meshMagic":220705151, "motionIDsData":[72,8] },
 	"RE4": 			{ "modelExt": ".221108797",  "texExt": ".143221013", "mmtrExt": ".221007879",  "nDir": "stm", "mdfExt": ".mdf2.32", "meshVersion": 3, "mdfVersion": 4, "mlistExt": ".663", "meshMagic":220822879, "motionIDsData":[72,8] },
 	"AJ_AAT": 		{ "modelExt": ".230612127",  "texExt": ".719230324", "mmtrExt": ".230815080",  "nDir": "stm", "mdfExt": ".mdf2.37", "meshVersion": 3, "mdfVersion": 4, "mlistExt": ".750", "meshMagic":230406984, "motionIDsData":[72,8] },
-	"DD2": 			{ "modelExt": ".231011879",  "texExt": ".760230703", "mmtrExt": ".230815080",  "nDir": "stm", "mdfExt": ".mdf2.40", "meshVersion": 3, "mdfVersion": 4, "mlistExt": ".751", "meshMagic":230517984, "motionIDsData":[72,8] },
+	"DD2": 			{ "modelExt": ".240423143",  "texExt": ".760230703", "mmtrExt": ".240112003",  "nDir": "stm", "mdfExt": ".mdf2.40", "meshVersion": 3, "mdfVersion": 4, "mlistExt": ".751", "meshMagic":230517984, "motionIDsData":[72,8] },
 	"DRDR": 		{ "modelExt": ".240424828",  "texExt": ".240606151", "mmtrExt": ".240405143",  "nDir": "stm", "mdfExt": ".mdf2.40", "meshVersion": 3, "mdfVersion": 4, "mlistExt": ".854", "meshMagic":240423829, "motionIDsData":[72,8] },
-	"MHWs": 		{"modelExt": ".240820143",  "texExt": ".760230703", "mmtrExt": ".240718143",  "nDir": "stm", "mdfExt": ".mdf2.45", "meshVersion": 4, "mdfVersion": 4, "mlistExt": ".992", "meshMagic": 240704828, "motionIDsData": [72, 8]},
-	"MHS3": 		{"modelExt": ".250604100",  "texExt": ".251111100", "mmtrExt": ".250604100",  "nDir": "stm", "mdfExt": ".mdf2.49", "meshVersion": 4, "mdfVersion": 4, "mlistExt": ".1004", "meshMagic": 250203152, "motionIDsData": [72, 8]},
-	"Pragmata": 	{"modelExt": ".250925211",  "texExt": ".250813143", "mmtrExt": ".250925211",  "nDir": "STM", "mdfExt": ".mdf2.51", "meshVersion": 4, "mdfVersion": 4, "mlistExt": ".1057", "meshMagic": 250707828, "motionIDsData": [72, 8]},
-	"RE9": 			{"modelExt": ".250925211",  "texExt": ".250813143", "mmtrExt": ".250925211",  "nDir": "stm", "mdfExt": ".mdf2.51", "meshVersion": 4, "mdfVersion": 4, "mlistExt": ".1047", "meshMagic": 250904410, "motionIDsData": [72, 8]},
+	"MHWs": 		{"modelExt": ".241111606",  "texExt": ".241106027", "mmtrExt": ".250206176",  "nDir": "stm", "mdfExt": ".mdf2.45", "meshVersion": 4, "mdfVersion": 4, "mlistExt": ".992", "meshMagic": 240704828, "motionIDsData": [72, 8]},
+	"MHS3": 		{"modelExt": ".250604100",  "texExt": ".251111100", "mmtrExt": ".250905804",  "nDir": "stm", "mdfExt": ".mdf2.49", "meshVersion": 4, "mdfVersion": 4, "mlistExt": ".1004", "meshMagic": 250203152, "motionIDsData": [72, 8]},
+	"Pragmata": 	{"modelExt": ".250925211",  "texExt": ".250813143", "mmtrExt": ".251112995",  "nDir": "STM", "mdfExt": ".mdf2.51", "meshVersion": 4, "mdfVersion": 4, "mlistExt": ".1057", "meshMagic": 250707828, "motionIDsData": [72, 8]},
+	"RE9": 			{"modelExt": ".250925211",  "texExt": ".250813143", "mmtrExt": ".251112994",  "nDir": "stm", "mdfExt": ".mdf2.51", "meshVersion": 4, "mdfVersion": 4, "mlistExt": ".1047", "meshMagic": 250904410, "motionIDsData": [72, 8]},
 }
 
 extToFormat = { #incomplete, just testing
@@ -3448,13 +3448,13 @@ class meshFile(object):
 		elif (meshVersion == 230406984 or self.path.find(".230612127") != -1): #Apollo Justice
 			isMeshVer3 = True
 			sGameName = "AJ_AAT"
-		elif (meshVersion == 230517984 or self.path.find(".231011879") != -1): #DD2
+		elif (meshVersion == 230517984 or self.path.find(".240423143") != -1 or self.path.find(".231011879") != -1): #DD2
 			isMeshVer3 = True
 			sGameName = "DD2"
 		elif (meshVersion == 240423829 or self.path.find(".240424828") != -1): #DD2
 			isMeshVer3 = True
 			sGameName = "DRDR"
-		elif (meshVersion == 240704828 or self.path.find(".240820143") != -1):  # MHWs
+		elif (meshVersion == 240704828 or self.path.find(".241111606") != -1 or self.path.find(".240820143") != -1):  # MHWs
 			isMeshVer3 = True
 			sGameName = "MHWs"
 		elif (meshVersion == 250203152 or self.path.find(".250604100") != -1):  # MHS3
@@ -4104,6 +4104,94 @@ class meshFile(object):
 		faceBufferSize2nd = bs.readUInt64()
 		blendshapesOffset = bs.readUInt()
 		
+		streamingBufferList = []
+		if self.ver >= 3:
+			bs.readUInt64() #sunbreakSecondUnknown
+			bs.readUInt64() #sf6unkn0
+			streamVEOffset = bs.readUInt64() #streamingVertexElementOffset
+			bs.readUInt64() #sf6unkn2
+			afterMeshBufHdrPos = bs.tell()
+		
+		if self.ver >= 4:
+			savedPos = bs.tell()
+			bs.seek(160)
+			streamingInfoOffset = bs.readUInt64()
+			bs.seek(savedPos)
+			
+			if streamingInfoOffset > 0:
+				bs.seek(streamingInfoOffset)
+				streamEntryCount = bs.readUInt()
+				bs.readUInt() #unkn1
+				streamEntryOffset = bs.readUInt64()
+				
+				if streamEntryCount > 0:
+					bs.seek(streamEntryOffset)
+					streamInfoEntries = []
+					for si in range(streamEntryCount):
+						sBufStart = bs.readUInt()
+						sBufLen = bs.readUInt()
+						streamInfoEntries.append((sBufStart, sBufLen))
+					
+					streamingData = None
+					relPath = ""
+					if self.rootDir:
+						rootLower = self.rootDir.lower().rstrip("\\/")
+						pathLower = self.path.lower()
+						rootIdx = pathLower.find(rootLower)
+						if rootIdx != -1:
+							relPath = self.path[rootIdx + len(rootLower) + 1:]
+					
+					if relPath:
+						for sep in ["\\", "/"]:
+							streamPath = self.rootDir + "streaming" + sep + relPath
+							if rapi.checkFileExists(streamPath):
+								try:
+									streamingData = rapi.loadIntoByteArray(streamPath)
+								except:
+									pass
+								break
+					
+					if streamingData is not None and len(streamingData) > 0:
+						bs.seek(afterMeshBufHdrPos)
+						for si in range(streamEntryCount):
+							sUnkn0 = bs.readUInt64()
+							sTotalBufSize = bs.readUInt()
+							sVertBufLen = bs.readUInt()
+							sMainVECount = bs.readUShort()
+							sVECount = bs.readUShort()
+							if sGameName in ("Pragmata", "MHS3", "RE9"):
+								bs.seek(16, 1)
+							sUnpaddedBufSize = bs.readUInt()
+							for _skip in range(9):
+								bs.readUInt()
+							
+							sInfo = streamInfoEntries[si]
+							sVertBuf = streamingData[sInfo[0]:sInfo[0]+sVertBufLen]
+							sFaceBuf = streamingData[sInfo[0]+sVertBufLen:sInfo[0]+sUnpaddedBufSize]
+							
+							sVEH = []
+							if streamVEOffset > 0 and sMainVECount > 0:
+								savedP = bs.tell()
+								paddedElemSize = ((8 * vertElemCountA + 15) // 16) * 16
+								bs.seek(streamVEOffset + (si * paddedElemSize))
+								for vi in range(sMainVECount):
+									sVEH.append([bs.readUShort(), bs.readUShort(), bs.readUInt()])
+								bs.seek(savedP)
+							
+							streamingBufferList.append({
+								'vertexBuffer': sVertBuf,
+								'faceBuffer': sFaceBuf,
+								'vertElemHeaders': sVEH if sVEH else None,
+								'vertBuffSize': sVertBufLen,
+							})
+						
+						print("Loaded", len(streamingBufferList), "streaming buffer(s) from streaming file")
+					elif streamEntryCount > 0:
+						print("\nWARNING: This is a streaming mesh. The streaming mesh file is required.")
+						if relPath:
+							print("  Expected at: " + self.rootDir + "streaming\\" + relPath)
+						print("  Extract both mesh files from the game.\n")
+		
 		bs.seek(vertElemHdrOffs)
 		vertElemHeaders = []
 		positionIndex = -1
@@ -4321,6 +4409,24 @@ class meshFile(object):
 						vertsBefore  = submeshData[k][4]
 						uknSubmeshInt1 = submeshData[k][5]
 						
+						bufferIdx = uknSubmeshID
+						curVertBuf = vertexBuffer
+						curVEH = vertElemHeaders
+						curFaceBuf = None
+						curVertStart = vertexStartIndex
+						isStreaming = False
+						if bufferIdx > 0 and bufferIdx - 1 < len(streamingBufferList):
+							sBuf = streamingBufferList[bufferIdx - 1]
+							curVertBuf = sBuf['vertexBuffer']
+							curFaceBuf = sBuf['faceBuffer']
+							if sBuf['vertElemHeaders']:
+								curVEH = sBuf['vertElemHeaders']
+							curVertStart = 0
+							isStreaming = True
+						elif bufferIdx > 0 and len(streamingBufferList) == 0:
+							if vertBuffSize == 0:
+								continue
+						
 						numVerts = submeshData[k+1][4] - vertsBefore if k+1 < len(submeshData) else meshVertexInfo[j][4] - (submeshData[k][4] - numVertsLOD)
 						
 						mainMeshNo = self.groupIDs[len(self.groupIDs)-1] if bReadGroupIds else j+1
@@ -4370,74 +4476,103 @@ class meshFile(object):
 							#rapi.rpgSetName(meshName + "__" + matName + "__" + str(submeshData[k][len(submeshData[k])-1]))
 							rapi.rpgSetName(meshName + '__' + matName)
 						
-						if positionIndex != -1:
+						if positionIndex != -1 and positionIndex < len(curVEH):
 							if self.pos: #position offset
 								posList = []
 								for v in range(vertsBefore, vertsBefore+numVerts):
 									idx = 12 * v
-									transVec = NoeVec3(((struct.unpack_from('f', vertexBuffer, idx))[0], (struct.unpack_from('f', vertexBuffer, idx + 4))[0], (struct.unpack_from('f', vertexBuffer, idx + 8))[0])) * self.rot.transpose()
+									transVec = NoeVec3(((struct.unpack_from('f', curVertBuf, idx))[0], (struct.unpack_from('f', curVertBuf, idx + 4))[0], (struct.unpack_from('f', curVertBuf, idx + 8))[0])) * self.rot.transpose()
 									posList.append(transVec[0] + self.pos[0]) 
 									posList.append(transVec[1] + self.pos[1])
 									posList.append(transVec[2] + self.pos[2])
 								posBuff = struct.pack("<" + 'f'*len(posList), *posList)
 								rapi.rpgBindPositionBufferOfs(posBuff, noesis.RPGEODATA_FLOAT, 12, 0)
 							else:
-								rapi.rpgBindPositionBufferOfs(vertexBuffer, noesis.RPGEODATA_FLOAT, vertElemHeaders[positionIndex][1], (vertElemHeaders[positionIndex][1] * vertsBefore))
+								rapi.rpgBindPositionBufferOfs(curVertBuf, noesis.RPGEODATA_FLOAT, curVEH[positionIndex][1], (curVEH[positionIndex][1] * vertsBefore))
 						
-						if normalIndex != -1 and bNORMsEnabled:
+						if normalIndex != -1 and normalIndex < len(curVEH) and bNORMsEnabled:
 							if bDebugNormals and not bColorsEnabled:
-								rapi.rpgBindColorBufferOfs(vertexBuffer, noesis.RPGEODATA_BYTE, vertElemHeaders[normalIndex][1], vertElemHeaders[normalIndex][2] + (vertElemHeaders[normalIndex][1] * vertsBefore), 4)
+								rapi.rpgBindColorBufferOfs(curVertBuf, noesis.RPGEODATA_BYTE, curVEH[normalIndex][1], curVEH[normalIndex][2] + (curVEH[normalIndex][1] * vertsBefore), 4)
 							else:
-								rapi.rpgBindNormalBufferOfs(vertexBuffer, noesis.RPGEODATA_BYTE, vertElemHeaders[normalIndex][1], vertElemHeaders[normalIndex][2] + (vertElemHeaders[normalIndex][1] * vertsBefore))
+								rapi.rpgBindNormalBufferOfs(curVertBuf, noesis.RPGEODATA_BYTE, curVEH[normalIndex][1], curVEH[normalIndex][2] + (curVEH[normalIndex][1] * vertsBefore))
 								if bTANGsEnabled:
-									rapi.rpgBindTangentBufferOfs(vertexBuffer, noesis.RPGEODATA_BYTE, vertElemHeaders[normalIndex][1], 4 + vertElemHeaders[normalIndex][2] + (vertElemHeaders[normalIndex][1] * vertsBefore))
+									rapi.rpgBindTangentBufferOfs(curVertBuf, noesis.RPGEODATA_BYTE, curVEH[normalIndex][1], 4 + curVEH[normalIndex][2] + (curVEH[normalIndex][1] * vertsBefore))
 						try:
 							rapi.rpgSetUVScaleBias(NoeVec3((self.uvBias[names[nameRemapTable[materialID]]][0], 1, 1)), NoeVec3((self.uvBias[names[nameRemapTable[materialID]]][1], 0, 0)))
 						except:
 							rapi.rpgSetUVScaleBias(NoeVec3((1,1,1)), NoeVec3((0,0,0)))
-						if uvIndex != -1 and bUVsEnabled:
-							rapi.rpgBindUV1BufferOfs(vertexBuffer, noesis.RPGEODATA_HALFFLOAT, vertElemHeaders[uvIndex][1], vertElemHeaders[uvIndex][2] + (vertElemHeaders[uvIndex][1] * vertsBefore))
-						if uv2Index != -1 and bUVsEnabled:
-							rapi.rpgBindUV2BufferOfs(vertexBuffer, noesis.RPGEODATA_HALFFLOAT, vertElemHeaders[uv2Index][1], vertElemHeaders[uv2Index][2] + (vertElemHeaders[uv2Index][1] * vertsBefore))
+						if uvIndex != -1 and uvIndex < len(curVEH) and bUVsEnabled:
+							rapi.rpgBindUV1BufferOfs(curVertBuf, noesis.RPGEODATA_HALFFLOAT, curVEH[uvIndex][1], curVEH[uvIndex][2] + (curVEH[uvIndex][1] * vertsBefore))
+						if uv2Index != -1 and uv2Index < len(curVEH) and bUVsEnabled:
+							rapi.rpgBindUV2BufferOfs(curVertBuf, noesis.RPGEODATA_HALFFLOAT, curVEH[uv2Index][1], curVEH[uv2Index][2] + (curVEH[uv2Index][1] * vertsBefore))
 						
-						if weightIndex != -1 and bSkinningEnabled and bDoSkin:
-							#rapi.rpgSetBoneMap(boneRemapTable)
+						if weightIndex != -1 and weightIndex < len(curVEH) and bSkinningEnabled and bDoSkin:
 							rapi.rpgSetBoneMap(self.fullRemapTable)
 							idxList = []
-							start = vertexStartIndex + vertElemHeaders[weightIndex][2] + (vertElemHeaders[weightIndex][1] * vertsBefore)
-							if sGameName in ("SF6", "MHWs", "MHS3", "Pragmata"):
-								for v in range(numVerts):
-									bs.seek(start + vertElemHeaders[weightIndex][1] * v)
-									for bID in range(3):
-										idxList.append(bs.readBits(10)+fullRemapOffs)
-									bs.readBits(2)
-									for bID in range(3):
-										idxList.append(bs.readBits(10)+fullRemapOffs)
-									idxList.extend([0,0])
-								idxBuff = struct.pack("<" + 'H'*len(idxList), *idxList)
-								rapi.rpgBindBoneIndexBufferOfs(idxBuff, noesis.RPGEODATA_USHORT, 16, 0, 8)
-							elif fullBonesOffs:
-								for v in range(numVerts):
-									bs.seek(start + vertElemHeaders[weightIndex][1] * v)
-									for w in range(8):
-										idxList.append(bs.readUByte()+fullRemapOffs)
-								idxBuff = struct.pack("<" + 'H'*len(idxList), *idxList)
-								rapi.rpgBindBoneIndexBufferOfs(idxBuff, noesis.RPGEODATA_USHORT, 16, 0, 8)
+							wgtVEH = curVEH
+							if isStreaming:
+								wgtStream = NoeBitStream(curVertBuf)
+								start = wgtVEH[weightIndex][2] + (wgtVEH[weightIndex][1] * vertsBefore)
+								if sGameName in ("SF6", "MHWs", "MHS3", "Pragmata"):
+									for v in range(numVerts):
+										wgtStream.seek(start + wgtVEH[weightIndex][1] * v)
+										for bID in range(3):
+											idxList.append(wgtStream.readBits(10)+fullRemapOffs)
+										wgtStream.readBits(2)
+										for bID in range(3):
+											idxList.append(wgtStream.readBits(10)+fullRemapOffs)
+										idxList.extend([0,0])
+									idxBuff = struct.pack("<" + 'H'*len(idxList), *idxList)
+									rapi.rpgBindBoneIndexBufferOfs(idxBuff, noesis.RPGEODATA_USHORT, 16, 0, 8)
+								elif fullBonesOffs:
+									for v in range(numVerts):
+										wgtStream.seek(start + wgtVEH[weightIndex][1] * v)
+										for w in range(8):
+											idxList.append(wgtStream.readUByte()+fullRemapOffs)
+									idxBuff = struct.pack("<" + 'H'*len(idxList), *idxList)
+									rapi.rpgBindBoneIndexBufferOfs(idxBuff, noesis.RPGEODATA_USHORT, 16, 0, 8)
+								else:
+									rapi.rpgBindBoneIndexBufferOfs(curVertBuf, noesis.RPGEODATA_UBYTE, wgtVEH[weightIndex][1], wgtVEH[weightIndex][2] + (wgtVEH[weightIndex][1] * vertsBefore), 8)
+								rapi.rpgBindBoneWeightBufferOfs(curVertBuf, noesis.RPGEODATA_UBYTE, wgtVEH[weightIndex][1], wgtVEH[weightIndex][2] + (wgtVEH[weightIndex][1] * vertsBefore) + 8, 8)
 							else:
-								rapi.rpgBindBoneIndexBufferOfs(vertexBuffer, noesis.RPGEODATA_UBYTE, vertElemHeaders[weightIndex][1], vertElemHeaders[weightIndex][2] + (vertElemHeaders[weightIndex][1] * vertsBefore), 8)
-							rapi.rpgBindBoneWeightBufferOfs(vertexBuffer, noesis.RPGEODATA_UBYTE, vertElemHeaders[weightIndex][1], vertElemHeaders[weightIndex][2] + (vertElemHeaders[weightIndex][1] * vertsBefore) + 8, 8)
+								start = vertexStartIndex + vertElemHeaders[weightIndex][2] + (vertElemHeaders[weightIndex][1] * vertsBefore)
+								if sGameName in ("SF6", "MHWs", "MHS3", "Pragmata"):
+									for v in range(numVerts):
+										bs.seek(start + vertElemHeaders[weightIndex][1] * v)
+										for bID in range(3):
+											idxList.append(bs.readBits(10)+fullRemapOffs)
+										bs.readBits(2)
+										for bID in range(3):
+											idxList.append(bs.readBits(10)+fullRemapOffs)
+										idxList.extend([0,0])
+									idxBuff = struct.pack("<" + 'H'*len(idxList), *idxList)
+									rapi.rpgBindBoneIndexBufferOfs(idxBuff, noesis.RPGEODATA_USHORT, 16, 0, 8)
+								elif fullBonesOffs:
+									for v in range(numVerts):
+										bs.seek(start + vertElemHeaders[weightIndex][1] * v)
+										for w in range(8):
+											idxList.append(bs.readUByte()+fullRemapOffs)
+									idxBuff = struct.pack("<" + 'H'*len(idxList), *idxList)
+									rapi.rpgBindBoneIndexBufferOfs(idxBuff, noesis.RPGEODATA_USHORT, 16, 0, 8)
+								else:
+									rapi.rpgBindBoneIndexBufferOfs(vertexBuffer, noesis.RPGEODATA_UBYTE, vertElemHeaders[weightIndex][1], vertElemHeaders[weightIndex][2] + (vertElemHeaders[weightIndex][1] * vertsBefore), 8)
+								rapi.rpgBindBoneWeightBufferOfs(vertexBuffer, noesis.RPGEODATA_UBYTE, vertElemHeaders[weightIndex][1], vertElemHeaders[weightIndex][2] + (vertElemHeaders[weightIndex][1] * vertsBefore) + 8, 8)
 							
-						if colorIndex != -1 and bColorsEnabled:
-							offs = vertElemHeaders[colorIndex][2] + (vertElemHeaders[colorIndex][1] * vertsBefore)
-							if offs + numVerts*4 < len(vertexBuffer):
-								rapi.rpgBindColorBufferOfs(vertexBuffer, noesis.RPGEODATA_UBYTE, vertElemHeaders[colorIndex][1], offs, 4)
+						if colorIndex != -1 and colorIndex < len(curVEH) and bColorsEnabled:
+							offs = curVEH[colorIndex][2] + (curVEH[colorIndex][1] * vertsBefore)
+							if offs + numVerts*4 < len(curVertBuf):
+								rapi.rpgBindColorBufferOfs(curVertBuf, noesis.RPGEODATA_UBYTE, curVEH[colorIndex][1], offs, 4)
 							else:
-								print("WARNING:", meshName, "Color buffer would have been read out of bounds by provided indices", "\n	Buffer Size:", len(vertexBuffer), "\n	Required Size:", offs + numVerts*4)
+								print("WARNING:", meshName, "Color buffer would have been read out of bounds by provided indices", "\n	Buffer Size:", len(curVertBuf), "\n	Required Size:", offs + numVerts*4)
 							
 						if numFaces > 0:
 							faceSize = 4 if intFaces == 1 else 2
-							bs.seek(faceBuffOffs + (facesBefore * faceSize))
-							indexBuffer = bs.readBytes(numFaces * faceSize)
+							if isStreaming and curFaceBuf is not None:
+								fStart = facesBefore * faceSize
+								indexBuffer = curFaceBuf[fStart:fStart + numFaces * faceSize]
+							else:
+								bs.seek(faceBuffOffs + (facesBefore * faceSize))
+								indexBuffer = bs.readBytes(numFaces * faceSize)
 							if bRenderAsPoints:
 								rapi.rpgCommitTriangles(None, noesis.RPGEODATA_USHORT if faceSize == 2 else noesis.RPGEODATA_UINT, (meshVertexInfo[j][4] - (vertsBefore)), noesis.RPGEO_POINTS, 0x1)
 							else:
@@ -4830,10 +4965,10 @@ def meshWriteModel(mdl, bs):
 	elif ext.find(".230612127") != -1:
 		sGameName = "AJ_AAT"
 		isMeshVer3 = True
-	elif ext.find(".231011879") != -1:
+	elif ext.find(".240423143") != -1 or ext.find(".231011879") != -1:
 		sGameName = "DD2"
 		isMeshVer3 = True
-	elif ext.find(".240820143") != -1:
+	elif ext.find(".241111606") != -1 or ext.find(".240820143") != -1:
 		sGameName = "MHWs"
 		isMeshVer3 = True
 	elif ext.find(".250604100") != -1:
