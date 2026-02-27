@@ -4162,7 +4162,7 @@ class meshFile(object):
 							if sGameName in ("Pragmata", "MHS3", "RE9"):
 								bs.seek(16, 1)
 							sUnpaddedBufSize = bs.readUInt()
-							for _skip in range(9):
+							for _skip in range(10):
 								bs.readUInt()
 							
 							sInfo = streamInfoEntries[si]
@@ -4170,11 +4170,11 @@ class meshFile(object):
 							sFaceBuf = streamingData[sInfo[0]+sVertBufLen:sInfo[0]+sUnpaddedBufSize]
 							
 							sVEH = []
-							if streamVEOffset > 0 and sMainVECount > 0:
+							if streamVEOffset > 0 and vertElemCountA > 0:
 								savedP = bs.tell()
 								paddedElemSize = ((8 * vertElemCountA + 15) // 16) * 16
 								bs.seek(streamVEOffset + (si * paddedElemSize))
-								for vi in range(sMainVECount):
+								for vi in range(vertElemCountA):
 									sVEH.append([bs.readUShort(), bs.readUShort(), bs.readUInt()])
 								bs.seek(savedP)
 							
@@ -4186,6 +4186,14 @@ class meshFile(object):
 							})
 						
 						print("Loaded", len(streamingBufferList), "streaming buffer(s) from streaming file")
+						print("  streamVEOffset:", streamVEOffset, " vertElemCountA:", vertElemCountA)
+						for dbgSi, dbgBuf in enumerate(streamingBufferList):
+							print("  Stream buf", dbgSi, "vertSize:", len(dbgBuf['vertexBuffer']), "faceSize:", len(dbgBuf['faceBuffer']))
+							if dbgBuf['vertElemHeaders']:
+								for dbgVi, dbgVe in enumerate(dbgBuf['vertElemHeaders']):
+									print("    sVEH[%d] type=%d stride=%d offset=%d" % (dbgVi, dbgVe[0], dbgVe[1], dbgVe[2]))
+							else:
+								print("    sVEH: None (using main VEH as fallback)")
 					elif streamEntryCount > 0:
 						print("\nWARNING: This is a streaming mesh. The streaming mesh file is required.")
 						if relPath:
@@ -4215,10 +4223,13 @@ class meshFile(object):
 				weightIndex = i
 			elif vertElemHeaders[i][0] == 5 and colorIndex == -1:
 				colorIndex = i
+		if len(streamingBufferList) > 0:
+			print("  Main VEH (posIdx=%d normIdx=%d uvIdx=%d wgtIdx=%d colIdx=%d):" % (positionIndex, normalIndex, uvIndex, weightIndex, colorIndex))
+			for dbgVi, dbgVe in enumerate(vertElemHeaders):
+				print("    VEH[%d] type=%d stride=%d offset=%d" % (dbgVi, dbgVe[0], dbgVe[1], dbgVe[2]))
 		bs.seek(vertBuffOffs)
 		
 		vertexStartIndex = bs.tell()
-		#print (vertElemHdrOffs, vertBuffOffs, uknVB, vertBuffSize, faceBuffOffs, vertElemCountA, vertElemCountB)
 		vertexBuffer = bs.readBytes(vertBuffSize)
 		submeshDataArr = []
 		
@@ -4421,6 +4432,8 @@ class meshFile(object):
 							curFaceBuf = sBuf['faceBuffer']
 							if sBuf['vertElemHeaders']:
 								curVEH = sBuf['vertElemHeaders']
+							else:
+								print("WARNING: Sub %d bufIdx=%d has NO streaming VEH, using main VEH" % (k, bufferIdx))
 							curVertStart = 0
 							isStreaming = True
 						elif bufferIdx > 0 and len(streamingBufferList) == 0:
@@ -4560,7 +4573,7 @@ class meshFile(object):
 							
 						if colorIndex != -1 and colorIndex < len(curVEH) and bColorsEnabled:
 							offs = curVEH[colorIndex][2] + (curVEH[colorIndex][1] * vertsBefore)
-							if offs + numVerts*4 < len(curVertBuf):
+							if offs + numVerts*4 <= len(curVertBuf):
 								rapi.rpgBindColorBufferOfs(curVertBuf, noesis.RPGEODATA_UBYTE, curVEH[colorIndex][1], offs, 4)
 							else:
 								print("WARNING:", meshName, "Color buffer would have been read out of bounds by provided indices", "\n	Buffer Size:", len(curVertBuf), "\n	Required Size:", offs + numVerts*4)
