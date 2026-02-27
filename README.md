@@ -10,31 +10,39 @@
 
 ## 🎮 支持游戏
 
-| 游戏 | 状态 |
-|------|------|
-| Resident Evil 2/3/4/7/8 Remake | ✅ |
-| Devil May Cry 5 | ✅ |
-| Monster Hunter Rise / Wilds | ✅ |
-| Monster Hunter Stories 3 | ✅ |
-| Street Fighter 6 | ✅ |
-| Dragon's Dogma 2 | ✅ |
-| ExoPrimal | ✅ |
-| Apollo Justice: Ace Attorney Trilogy | ✅ |
-| Pragmata | ✅ |
+| 游戏 | 模型 | 贴图 | 动画 |
+|------|:----:|:----:|:----:|
+| Resident Evil 7 | ✅ | ✅ | ✅ |
+| Resident Evil 2 Remake | ✅ | ✅ | ✅ |
+| Resident Evil 3 Remake | ✅ | ✅ | ✅ |
+| Resident Evil 4 Remake | ✅ | ✅ | ✅ |
+| Resident Evil 8 (Village) | ✅ | ✅ | ✅ |
+| Resident Evil 9 | ✅ | ✅ | ✅ |
+| Resident Evil ReVerse | ✅ | ✅ | ✅ |
+| Devil May Cry 5 | ✅ | ✅ | ✅ |
+| Monster Hunter Rise / Sunbreak | ✅ | ✅ | ✅ |
+| Monster Hunter Wilds | ✅ | ✅ | ✅ |
+| Monster Hunter Stories 3 | ✅ | ✅ | ✅ |
+| Street Fighter 6 | ✅ | ✅ | ✅ |
+| Dragon's Dogma 2 | ✅ | ✅ | ✅ |
+| Dead Rising Deluxe Remaster | ✅ | ✅ | ✅ |
+| ExoPrimal | ✅ | ✅ | ✅ |
+| Apollo Justice: Ace Attorney Trilogy | ✅ | ✅ | ✅ |
+| Pragmata | ✅ | ✅ | ✅ |
 
 ## 📦 安装
 
 1. 下载 [Noesis](https://www.richwhitehouse.com/index.php?content=inc_projects.php&showproject=91)
-2. 将脚本放入 `[Noesis]/plugins/python/` 目录：
-   - `fmt_RE_Motion_Rel.py` - 动画导入脚本
-   - `fmt_RE_Motion_Rel_AutoLoad.py` - 自动加载版本（可选）
+2. 将 `fmt_RE_Motion_Rel.py` 放入 `[Noesis]/plugins/python/` 目录
 3. 重启 Noesis
 
-## 💡 使用技巧
+## 💡 使用说明
 
-- 支持 `.motlist` 动画文件的导入
-- 双击 `..` 返回上级目录，或直接粘贴路径跳转
-- 可同时加载多个模型并自动合并骨骼
+- 支持 `.mesh` 模型、`.tex` 贴图、`.motlist` 动画文件的导入导出
+- 导入 motlist 时弹出选择窗口，可选择加载指定 clip 或全部加载
+- 通过 `Tools > RE Engine > Auto Load All Motions` 菜单可随时切换是否自动加载全部动画
+- 在文件头部选项区设置 `bAutoLoadMotions = True` 可永久跳过弹窗
+- 命令行模式下传入 `-noprompt` 或 `-b` 同样跳过弹窗，适配 3dsMax 等外部工具批量调用
 - 使用 `-fbxmultitake` 参数可分离多动画轨道导出
 
 ## 🔗 相关链接
@@ -46,7 +54,6 @@
 
 - [alphazolam](https://github.com/alphazolam/fmt_RE_MESH-Noesis-Plugin) - 原仓库作者
 - [Gh0stblade](https://github.com/Gh0stblade) - 初版插件作者
-- [RE-Engine-Lib](https://github.com/czastack/RE-Engine-Lib) - 动画压缩算法参考
 - [RE-Engine-Lib](https://github.com/kagenocookie/RE-Engine-Lib) - 动画压缩算法参考
 
 ## 📬 反馈

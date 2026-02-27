@@ -1,10 +1,13 @@
 #RE Engine [PC] - ".mesh" plugin for Rich Whitehouse's Noesis
 #Authors: alphaZomega, Gh0stblade 
 #Special thanks: Chrrox, SilverEzredes, Enaium 
-Version = "v3.28 (September 21, 2024)"
+Version = "v3.29 (February 27, 2026)"
 
 #Changelog:
-#- Fixed motlist.854 reading
+#- Added RE9 model and animation support
+#- Fixed MHWilds/MHS3/Pragmata mesh header layout (Onimusha layout, meshVersion 4)
+#- Fixed MHWilds packed 6-index bone weights (same as SF6)
+#- Fixed motlist version threshold for RE9 uknOffset (>= 1047)
 
 
 
@@ -29,6 +32,7 @@ bDD2Export					= True					#Enable or disable export of mesh.231011879 from the e
 bDRDRExport					= True					#Enable or disable export of mesh.240424828 from the export list (and tex.240606151)
 bMHWsExport					= True					#Enable or disable export of mesh.240820143 from the export list (and tex.240701001)
 bMHS3Export					= True					#Enable or disable export of mesh.250604100 from the export list (and tex.251111100)
+bRE9Export					= True					#Enable or disable export of RE9 mesh.250925211 from the export list (and tex.250813143)
 bPragmataExport				= True					#Enable or disable export of mesh.250925211 from the export list (and tex.250813143)
 
 #Mesh Global
@@ -60,6 +64,7 @@ bImportMips 				= False					#Imports texture mip maps as separate images
 texOutputExt				= ".tga"				#File format used when linking FBX materials to images
 doConvertMatsForBlender		= False					#Load alpha maps as reflection maps, metallic maps as specular maps and roughness maps as bump maps for use with modified Blender FBX importer
 bNoImportMenu				= False					#Hide the import menu on loading a mesh
+bAutoLoadMotions			= False					#Automatically load all motion clips without showing the motlist selection dialog
 
 #Export Options
 bNewExportMenu				= False					#Show a custom Noesis window on mesh export
@@ -125,9 +130,10 @@ def registerNoesisTypes():
 	noesis.setHandlerTypeCheck(handle, SCNCheckType)
 	noesis.setHandlerLoadModel(handle, SCNLoadModel)
 	
-	handle = noesis.register("RE Engine MOTLIST [PC]", ".60;.85;.99;.484;.486;.500;.524;.528;.643;.653;.663;.750;.751;.851;.854;.992;.1004;.1057")
+	handle = noesis.register("RE Engine MOTLIST [PC]", ".60;.85;.99;.484;.486;.500;.524;.528;.643;.653;.663;.750;.751;.851;.854;.992;.1004;.1047;.1057")
 	noesis.setHandlerTypeCheck(handle, motlistCheckType)
 	noesis.setHandlerLoadModel(handle, motlistLoadModel)
+	noesis.addOption(handle, "-noprompt", "Automatically load all motion clips", 0)
 
 	if bRE2Export:
 		handle = noesis.register("RE2 Remake Texture [PC]", ".10")
@@ -293,9 +299,24 @@ def registerNoesisTypes():
 		noesis.setHandlerTypeCheck(handle, meshCheckType)
 		noesis.setHandlerWriteModel(handle, meshWriteModel)
 		addOptions(handle)
+
+	if bRE9Export:
+		handle = noesis.register("RE9 Mesh", (".250925211"))
+		noesis.setHandlerTypeCheck(handle, meshCheckType)
+		noesis.setHandlerWriteModel(handle, meshWriteModel)
+		addOptions(handle)
 		
+	handle = noesis.registerTool("Auto Load All Motions", toggleAutoLoadMotions, "Toggle auto-loading all motion clips without showing the selection dialog")
+	noesis.setToolSubMenuName(handle, "RE Engine")
+
 	noesis.logPopup()
 	return 1
+
+def toggleAutoLoadMotions(toolIndex):
+	global bAutoLoadMotions
+	bAutoLoadMotions = not bAutoLoadMotions
+	noesis.checkToolMenuItem("Auto Load All Motions", bAutoLoadMotions)
+	return 0
 		
 #Default global variables for internal use:
 sGameName = "RE2"
@@ -325,9 +346,10 @@ formats = {
 	"AJ_AAT": 		{ "modelExt": ".230612127",  "texExt": ".719230324", "mmtrExt": ".230815080",  "nDir": "stm", "mdfExt": ".mdf2.37", "meshVersion": 3, "mdfVersion": 4, "mlistExt": ".750", "meshMagic":230406984, "motionIDsData":[72,8] },
 	"DD2": 			{ "modelExt": ".231011879",  "texExt": ".760230703", "mmtrExt": ".230815080",  "nDir": "stm", "mdfExt": ".mdf2.40", "meshVersion": 3, "mdfVersion": 4, "mlistExt": ".751", "meshMagic":230517984, "motionIDsData":[72,8] },
 	"DRDR": 		{ "modelExt": ".240424828",  "texExt": ".240606151", "mmtrExt": ".240405143",  "nDir": "stm", "mdfExt": ".mdf2.40", "meshVersion": 3, "mdfVersion": 4, "mlistExt": ".854", "meshMagic":240423829, "motionIDsData":[72,8] },
-	"MHWs": 		{"modelExt": ".240820143",  "texExt": ".760230703", "mmtrExt": ".240718143",  "nDir": "stm", "mdfExt": ".mdf2.45", "meshVersion": 3, "mdfVersion": 4, "mlistExt": ".992", "meshMagic": 240704828, "motionIDsData": [72, 8]},
-	"MHS3": 		{"modelExt": ".250604100",  "texExt": ".251111100", "mmtrExt": ".250604100",  "nDir": "stm", "mdfExt": ".mdf2.49", "meshVersion": 3, "mdfVersion": 4, "mlistExt": ".1004", "meshMagic": 0, "motionIDsData": [72, 8]},
-	"Pragmata": 	{"modelExt": ".250925211",  "texExt": ".250813143", "mmtrExt": ".250925211",  "nDir": "STM", "mdfExt": ".mdf2.51", "meshVersion": 3, "mdfVersion": 4, "mlistExt": ".1057", "meshMagic": 250707828, "motionIDsData": [72, 8]},
+	"MHWs": 		{"modelExt": ".240820143",  "texExt": ".760230703", "mmtrExt": ".240718143",  "nDir": "stm", "mdfExt": ".mdf2.45", "meshVersion": 4, "mdfVersion": 4, "mlistExt": ".992", "meshMagic": 240704828, "motionIDsData": [72, 8]},
+	"MHS3": 		{"modelExt": ".250604100",  "texExt": ".251111100", "mmtrExt": ".250604100",  "nDir": "stm", "mdfExt": ".mdf2.49", "meshVersion": 4, "mdfVersion": 4, "mlistExt": ".1004", "meshMagic": 250203152, "motionIDsData": [72, 8]},
+	"Pragmata": 	{"modelExt": ".250925211",  "texExt": ".250813143", "mmtrExt": ".250925211",  "nDir": "STM", "mdfExt": ".mdf2.51", "meshVersion": 4, "mdfVersion": 4, "mlistExt": ".1057", "meshMagic": 250707828, "motionIDsData": [72, 8]},
+	"RE9": 			{"modelExt": ".250925211",  "texExt": ".250813143", "mmtrExt": ".250925211",  "nDir": "stm", "mdfExt": ".mdf2.51", "meshVersion": 4, "mdfVersion": 4, "mlistExt": ".1047", "meshMagic": 250904410, "motionIDsData": [72, 8]},
 }
 
 extToFormat = { #incomplete, just testing
@@ -1426,7 +1448,7 @@ dialogOptions = DialogOptions()
 
 DoubleClickTimer = namedtuple("DoubleClickTimer", "name idx timer")
 
-gamesList = [ "RE7", "RE7RT", "RE2", "RERT", "RE3", "RE4", "RE8", "MHRSunbreak", "DMC5", "SF6", "ReVerse", "ExoPrimal", "AJ_AAT", "DD2", "DRDR", "MHWs", "MHS3", "Pragmata" ]
+gamesList = [ "RE7", "RE7RT", "RE2", "RERT", "RE3", "RE4", "RE8", "MHRSunbreak", "DMC5", "SF6", "ReVerse", "ExoPrimal", "AJ_AAT", "DD2", "DRDR", "MHWs", "MHS3", "RE9", "Pragmata" ]
 fullGameNames = [
 	"Resident Evil 7",
 	"Resident Evil 7 RT",
@@ -1443,8 +1465,9 @@ fullGameNames = [
 	"Apollo Justice AAT",
 	"Dragon's Dogma 2",
 	"Dead Rising DR",
-	"MHWs",
+	"Monster Hunter Wilds",
 	"Monster Hunter Stories 3",
+	"Resident Evil 9",
 	"Pragmata",
 ]
 		
@@ -3148,8 +3171,8 @@ class motlistFile:
 		motionIDsOffset = bs.readUInt64()
 		self.name = readUnicodeStringAt(bs, bs.readUInt64())
 		bs.seek(8, 1)
-		# Pragmata (1057) and later have an extra 8-byte field before numOffsets
-		if self.version >= 1057:
+		# RE9 (1047) and later have an extra 8-byte field before numOffsets
+		if self.version >= 1047:
 			bs.seek(8, 1)  # Skip uknOffset
 		numOffsets = bs.readUInt()
 		bs.seek(pointersOffset)
@@ -3258,7 +3281,20 @@ def motlistLoadModel(data, mdlList):
 	dialogOptions.motDialog = None
 	motlist = motlistFile(data, rapi.getInputName())
 	mlDialog = openOptionsDialogImportWindow(None, None, {"motlist":motlist, "isMotlist":True})
-	mlDialog.createMotlistWindow()
+	
+	skipDialog = bAutoLoadMotions or noesis.optWasInvoked("-noprompt") or noesis.optWasInvoked("-b")
+	if skipDialog:
+		mlDialog.motItems = [mot.name for mot in motlist.mots]
+		if mlDialog.motItems:
+			mlDialog.motItems.insert(0, "[ALL] - " + motlist.name)
+		mlDialog.pak = motlist
+		mlDialog.noeWnd = None
+		mlDialog.loadItems = mlDialog.motItems[1:]
+		mlDialog.fullLoadItems = [mlDialog.pak.path] * len(mlDialog.loadItems)
+		mlDialog.loadedMlists = {mlDialog.pak.path: motlist}
+		mlDialog.isOpen = False
+	else:
+		mlDialog.createMotlistWindow()
 	
 	mdl = NoeModel()
 	
@@ -3303,19 +3339,42 @@ def setOffsets(ver):
 	global BBskipBytes, numNodesLocation, LOD1OffsetLocation, normalsRecalcOffsLocation, bsHdrOffLocation, bsIndicesOffLocation, \
 	vBuffHdrOffsLocation, bonesOffsLocation, nodesIndicesOffsLocation, namesOffsLocation, floatsHdrOffsLocation
 	BBskipBytes = 				8 	if ver == 1 else 0
-	numNodesLocation = 			18 	if ver < 3 else 20
-	LOD1OffsetLocation = 		24 	if ver < 3 else 32
-	bsHdrOffLocation = 			64 	if ver < 3 else 56
-	normalsRecalcOffsLocation = 56 	if ver < 3 else 64
-	vBuffHdrOffsLocation = 		80 	if ver < 3 else 72
-	floatsHdrOffsLocation = 	72 	if ver < 3 else 96
-	bonesOffsLocation = 		48 	if ver < 3 else 104
-	nodesIndicesOffsLocation = 	96 	if ver < 3 else 112
-	bsIndicesOffLocation = 		112 if ver < 3 else 128
-	namesOffsLocation = 		120 if ver < 3 else 144
+	if ver >= 4:
+		numNodesLocation = 			20
+		LOD1OffsetLocation = 		48
+		bsHdrOffLocation = 			72
+		normalsRecalcOffsLocation = 80
+		vBuffHdrOffsLocation = 		88
+		floatsHdrOffsLocation = 	112
+		bonesOffsLocation = 		120
+		nodesIndicesOffsLocation = 	128
+		bsIndicesOffLocation = 		144
+		namesOffsLocation = 		152
+	elif ver >= 3:
+		numNodesLocation = 			20
+		LOD1OffsetLocation = 		32
+		bsHdrOffLocation = 			56
+		normalsRecalcOffsLocation = 64
+		vBuffHdrOffsLocation = 		72
+		floatsHdrOffsLocation = 	96
+		bonesOffsLocation = 		104
+		nodesIndicesOffsLocation = 	112
+		bsIndicesOffLocation = 		128
+		namesOffsLocation = 		144
+	else:
+		numNodesLocation = 			18
+		LOD1OffsetLocation = 		24
+		bsHdrOffLocation = 			64
+		normalsRecalcOffsLocation = 56
+		vBuffHdrOffsLocation = 		80
+		floatsHdrOffsLocation = 	72
+		bonesOffsLocation = 		48
+		nodesIndicesOffsLocation = 	96
+		bsIndicesOffLocation = 		112
+		namesOffsLocation = 		120
 	
-	if sGameName == "AJ_AAT" or sGameName == "DD2" or sGameName == "DRDR" or sGameName == "MHWs" or sGameName == "MHS3":
-		namesOffsLocation = 136 # on unrigged meshes its still 144
+	if sGameName == "AJ_AAT" or sGameName == "DD2" or sGameName == "DRDR":
+		namesOffsLocation = 136
 	#if isExoPrimal:
 	#	nodesIndicesOffsLocation = 104
 	#	namesOffsLocation = 136 
@@ -3399,14 +3458,14 @@ class meshFile(object):
 			isMeshVer3 = True
 			sGameName = "MHWs"
 		elif (meshVersion == 250203152 or self.path.find(".250604100") != -1):  # MHS3
-			isMeshVer3 = False  # MHS3 uses custom header layout
+			isMeshVer3 = True
 			sGameName = "MHS3"
+		elif meshVersion == 250904410:  # RE9 (shares fileVersion .250925211 with Pragmata, distinguished by internalVersion)
+			isMeshVer3 = True
+			sGameName = "RE9"
 		elif (meshVersion == 250707828 or self.path.find(".250925211") != -1):  # Pragmata
 			isMeshVer3 = True
 			sGameName = "Pragmata"
-		elif self.path.find(".250604100") != -1:  # MHS3 (meshMagic is 0, detect by extension)
-			isMeshVer3 = True
-			sGameName = "MHS3"
 		
 	'''MDF IMPORT ========================================================================================================================================================================'''
 	def createMaterials(self, matCount):
@@ -3993,7 +4052,7 @@ class meshFile(object):
 		bDoSkin = True
 		
 		bs.seek(numNodesLocation)
-		numNodes = bs.readUInt()
+		numNodes = bs.readUShort() if self.ver >= 4 else bs.readUInt()
 		bs.seek(LOD1OffsetLocation)
 		LOD1Offs = bs.readUInt64()
 		LOD2Offs = bs.readUInt64()
@@ -4040,8 +4099,8 @@ class meshFile(object):
 		
 		vertElemCountA = bs.readUShort()
 		vertElemCountB = bs.readUShort()
-		if sGameName == "Pragmata" or sGameName == "MHS3":
-			bs.seek(16, 1) # Pragmata version has extra 16 bytes padding here
+		if sGameName in ("Pragmata", "MHS3", "RE9"):
+			bs.seek(16, 1)
 		faceBufferSize2nd = bs.readUInt64()
 		blendshapesOffset = bs.readUInt()
 		
@@ -4130,7 +4189,7 @@ class meshFile(object):
 				boneMapCount = bs.readUInt()	
 				bAddNumbers = False
 				if rapi.getInputName().find(".noesis") == -1 and (not dialogOptions.dialog or len(dialogOptions.dialog.loadItems) == 1) and (not dialogOptions.motDialog or not dialogOptions.motDialog.loadItems) :
-					maxBones = 1024 if sGameName == "SF6" else 256
+					maxBones = 1024 if sGameName in ("SF6", "MHWs", "MHS3", "Pragmata", "RE9") else 256
 					if bAddBoneNumbers == 1 or noesis.optWasInvoked("-bonenumbers"):
 						bAddNumbers = True
 					elif bAddBoneNumbers == 2 and boneCount > maxBones and rapi.getInputName().lower().find(".scn") == -1:
@@ -4240,9 +4299,9 @@ class meshFile(object):
 					self.groupIDs.append(meshVertexInfo[len(meshVertexInfo)-1][0])
 					submeshData = []
 					for k in range(meshVertexInfo[j][1]):
-						if sGameName == "DRDR":
+						if sGameName == "DRDR" or self.ver >= 4:
 							submeshData.append([bs.readUShort(), bs.readUShort(), bs.readUInt(), bs.readUInt(), bs.readUInt(), bs.readUInt(), bs.readUInt64(), self.groupIDs[len(self.groupIDs)-1], bs.readUInt()])
-							del submeshData[len(submeshData)-1][2] #this is something new, not sure
+							del submeshData[len(submeshData)-1][2]
 						elif self.ver >= 2:
 							submeshData.append([bs.readUShort(), bs.readUShort(), bs.readUInt(), bs.readUInt(), bs.readUInt(), bs.readUInt64(), self.groupIDs[len(self.groupIDs)-1]]) 
 						else:
@@ -4346,7 +4405,7 @@ class meshFile(object):
 							rapi.rpgSetBoneMap(self.fullRemapTable)
 							idxList = []
 							start = vertexStartIndex + vertElemHeaders[weightIndex][2] + (vertElemHeaders[weightIndex][1] * vertsBefore)
-							if sGameName == "SF6":
+							if sGameName in ("SF6", "MHWs", "MHS3", "Pragmata"):
 								for v in range(numVerts):
 									bs.seek(start + vertElemHeaders[weightIndex][1] * v)
 									for bID in range(3):
@@ -4779,7 +4838,7 @@ def meshWriteModel(mdl, bs):
 		isMeshVer3 = True
 	elif ext.find(".250604100") != -1:
 		sGameName = "MHS3"
-		isMeshVer3 = False  # MHS3 uses custom Ver2-like layout
+		isMeshVer3 = True
 	elif ext.find(".250925211") != -1:
 		sGameName = "Pragmata"
 		isMeshVer3 = True
@@ -4844,8 +4903,7 @@ def meshWriteModel(mdl, bs):
 	extension = os.path.splitext(rapi.getInputName())[1]
 	vertElemCount = 3 
 	
-	if sGameName == "AJ_AAT" or sGameName == "DD2" or sGameName == "DRDR" or sGameName == "MHWs":
-		#namesOffsLocation = 136 if bDoSkin else 144
+	if sGameName in ("AJ_AAT", "DD2", "DRDR", "MHWs", "MHS3", "RE9", "Pragmata"):
 		isDD2Mesh = True
 
 	#check if exporting bones and create skin bone map if so:
@@ -4853,7 +4911,7 @@ def meshWriteModel(mdl, bs):
 		vertElemCount += 1
 		bonesList = []
 		newSkinBoneMap = []
-		maxBones = 1024 if sGameName == "SF6" else 256
+		maxBones = 1024 if sGameName in ("SF6", "MHWs", "MHS3", "Pragmata", "RE9") else 256
 		
 		if (bReWrite or bWriteBones) and dialogOptions.doCreateBoneMap:
 			generateBoneMap(mdl)
@@ -4926,7 +4984,7 @@ def meshWriteModel(mdl, bs):
 		
 		#header
 		f.seek(numNodesLocation)
-		numNodes = f.readUInt()
+		numNodes = f.readUShort() if formats[sGameName]["meshVersion"] >= 4 else f.readUInt()
 		f.seek(LOD1OffsetLocation)
 		LOD1Offs = f.readUInt64()
 		f.seek(vBuffHdrOffsLocation)  
@@ -5036,8 +5094,8 @@ def meshWriteModel(mdl, bs):
 		
 		if isMeshVer3:
 			f.seek(232)
-			if sGameName == "AJ_AAT" or sGameName == "DD2" or sGameName == "DRDR" or sGameName == "MHWs":
-				f.seek(f.readUInt64())
+		if sGameName in ("AJ_AAT", "DD2", "DRDR", "MHWs", "MHS3", "RE9", "Pragmata"):
+			f.seek(f.readUInt64())
 		elif sGameName == "RERT" or sGameName == "ReVerse" or sGameName == "MHRise" or sGameName == "RE8" or sGameName == "MHS3":
 			f.seek(192)
 		else:
@@ -5166,7 +5224,7 @@ def meshWriteModel(mdl, bs):
 		
 		#print(newMainMeshes)
 		
-		LOD1Offs = 176 if (sGameName == "DD2" or sGameName == "AJ_AAT" or sGameName == "DRDR" or sGameName == "MHWs") else 168 if isMeshVer3 else 128 if (sGameName == "RERT" or sGameName == "RE8" or sGameName == "MHRise" or sGameName == "MHS3") else 136
+		LOD1Offs = 176 if sGameName in ("DD2", "AJ_AAT", "DRDR", "MHWs", "MHS3", "RE9", "Pragmata") else 168 if isMeshVer3 else 128 if sGameName in ("RERT", "RE8", "MHRise") else 136
 		
 		#header:
 		bs.writeUInt(1213416781) #MESH
@@ -5177,7 +5235,7 @@ def meshWriteModel(mdl, bs):
 		
 		if isMeshVer3:
 			bs.writeUByte(3) #flag
-			if sGameName == "DD2" or sGameName == "AJ_AAT" or sGameName == "DRDR" or sGameName == "MHWs" or sGameName == "MHS3":
+			if sGameName in ("DD2", "AJ_AAT", "DRDR", "MHWs", "MHS3", "RE9", "Pragmata"):
 				bs.writeUByte(130) #solvedOffset
 				bs.writeUShort(84) #uknSF6
 			else:
@@ -5202,7 +5260,7 @@ def meshWriteModel(mdl, bs):
 			bs.writeUInt64(0) #namesOffs
 			bs.writeUInt64(0) #verticesOffset
 			bs.writeUInt64(0) #ukn4/padding
-			if sGameName == "DD2" or sGameName == "MHWs" or sGameName == "MHS3":
+			if sGameName in ("DD2", "MHWs", "MHS3", "RE9", "Pragmata"):
 				bs.writeUInt64(0) #ukn5/padding
 			
 		else:
@@ -5274,12 +5332,12 @@ def meshWriteModel(mdl, bs):
 			for j, submesh in enumerate(mm[0]):
 				#print ("New mainmesh GroupID", mm[len(mm)-1], "submesh", j)
 				bs.writeUInt(submesh[0])
-				if sGameName == "DRDR":
+				if sGameName == "DRDR" or formats[sGameName]["meshVersion"] >= 4:
 					bs.writeUInt(0)
 				bs.writeUInt(submesh[1])
 				bs.writeUInt(submesh[2])
 				bs.writeUInt(submesh[3])
-				if sGameName == "DRDR":
+				if sGameName == "DRDR" or formats[sGameName]["meshVersion"] >= 4:
 					bs.writeUInt(0)
 				if sGameName != "RE7" and sGameName != "RE2" and sGameName != "RE3" and sGameName != "DMC5":
 					bs.writeUInt64(0)
@@ -5614,15 +5672,17 @@ def meshWriteModel(mdl, bs):
 				bs.writeHalfFloat(vcmp[0])
 				bs.writeHalfFloat(vcmp[1])
 
+	bUsePacked6Idx = sGameName in ("SF6", "MHWs", "MHS3", "Pragmata")
+
 	def writeBoneID(bID, i):
-		if sGameName == "SF6":
+		if bUsePacked6Idx:
 			if i==3:
 				bs.writeBits(0, 2)
 			bs.writeBits(bID, 10)
 		else:
 			bs.writeUByte(bID)
 	
-	boneIdMax = 6 if sGameName == "SF6" else 8
+	boneIdMax = 6 if bUsePacked6Idx else 8
 	bnWeightStart = bs.tell()
 	
 	if bDoSkin:
