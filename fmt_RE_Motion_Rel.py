@@ -1,13 +1,11 @@
 #RE Engine [PC] - ".mesh" plugin for Rich Whitehouse's Noesis
 #Authors: alphaZomega, Gh0stblade 
 #Special thanks: Chrrox, SilverEzredes, Enaium 
-Version = "v3.29 (February 27, 2026)"
+Version = "v3.30 (June 4, 2026)"
 
 #Changelog:
-#- Added RE9 model and animation support
-#- Fixed MHWilds/MHS3/Pragmata mesh header layout (Onimusha layout, meshVersion 4)
-#- Fixed MHWilds packed 6-index bone weights (same as SF6)
-#- Fixed motlist version threshold for RE9 uknOffset (>= 1047)
+#- Added Onimusha: Way of the Sword mesh and animation support
+#- Fixed motlist version threshold for OniWS uknOffset (>= 1036)
 
 
 
@@ -33,6 +31,7 @@ bDRDRExport					= True					#Enable or disable export of mesh.240424828 from the 
 bMHWsExport					= True					#Enable or disable export of mesh.241111606 from the export list (and tex.241106027)
 bMHS3Export					= True					#Enable or disable export of mesh.250604100 from the export list (and tex.251111100)
 bRE9Export					= True					#Enable or disable export of RE9 mesh.250925211 from the export list (and tex.250813143)
+bOniWSExport				= True					#Enable or disable export of Onimusha: Way of the Sword mesh.251215606 from the export list (and tex.251111100)
 bPragmataExport				= True					#Enable or disable export of mesh.250925211 from the export list (and tex.250813143)
 
 #Mesh Global
@@ -112,7 +111,7 @@ def registerNoesisTypes():
 		noesis.addOption(handle, "-vfx", "Export as VFX mesh", 0)
 		return handle
 		
-	handle = noesis.register("RE Engine MESH [PC]", ".1902042334;.1808312334;.1808282334;.2008058288;.2102020001;.2101050001;.2109108288;.2109148288;.220128762;.220301866;.220721329;.221108797;.220907984;.230110883;.230612127;.240423143;.231011879;.240424828;.241111606;.240820143;.250604100;.250925211;.NewMesh")
+	handle = noesis.register("RE Engine MESH [PC]", ".1902042334;.1808312334;.1808282334;.2008058288;.2102020001;.2101050001;.2109108288;.2109148288;.220128762;.220301866;.220721329;.221108797;.220907984;.230110883;.230612127;.240423143;.231011879;.240424828;.241111606;.240820143;.250604100;.250925211;.251215606;.NewMesh")
 	noesis.setHandlerTypeCheck(handle, meshCheckType)
 	noesis.setHandlerLoadModel(handle, meshLoadModel)
 	noesis.addOption(handle, "-noprompt", "Do not prompt for MDF file", 0)
@@ -130,7 +129,7 @@ def registerNoesisTypes():
 	noesis.setHandlerTypeCheck(handle, SCNCheckType)
 	noesis.setHandlerLoadModel(handle, SCNLoadModel)
 	
-	handle = noesis.register("RE Engine MOTLIST [PC]", ".60;.85;.99;.484;.486;.500;.524;.528;.643;.653;.663;.750;.751;.851;.854;.992;.1004;.1047;.1057")
+	handle = noesis.register("RE Engine MOTLIST [PC]", ".60;.85;.99;.484;.486;.500;.524;.528;.643;.653;.663;.750;.751;.851;.854;.992;.1004;.1036;.1047;.1057")
 	noesis.setHandlerTypeCheck(handle, motlistCheckType)
 	noesis.setHandlerLoadModel(handle, motlistLoadModel)
 	noesis.addOption(handle, "-noprompt", "Automatically load all motion clips", 0)
@@ -291,6 +290,12 @@ def registerNoesisTypes():
 		noesis.setHandlerWriteModel(handle, meshWriteModel)
 		addOptions(handle)
 		
+	if bOniWSExport:
+		handle = noesis.register("Onimusha WotS Mesh", (".251215606"))
+		noesis.setHandlerTypeCheck(handle, meshCheckType)
+		noesis.setHandlerWriteModel(handle, meshWriteModel)
+		addOptions(handle)
+
 	if bPragmataExport:
 		handle = noesis.register("Pragmata Texture [PC]", ".250813143")
 		noesis.setHandlerTypeCheck(handle, texCheckType)
@@ -348,6 +353,7 @@ formats = {
 	"DRDR": 		{ "modelExt": ".240424828",  "texExt": ".240606151", "mmtrExt": ".240405143",  "nDir": "stm", "mdfExt": ".mdf2.40", "meshVersion": 3, "mdfVersion": 4, "mlistExt": ".854", "meshMagic":240423829, "motionIDsData":[72,8] },
 	"MHWs": 		{"modelExt": ".241111606",  "texExt": ".241106027", "mmtrExt": ".250206176",  "nDir": "stm", "mdfExt": ".mdf2.45", "meshVersion": 4, "mdfVersion": 4, "mlistExt": ".992", "meshMagic": 240704828, "motionIDsData": [72, 8]},
 	"MHS3": 		{"modelExt": ".250604100",  "texExt": ".251111100", "mmtrExt": ".250905804",  "nDir": "stm", "mdfExt": ".mdf2.49", "meshVersion": 4, "mdfVersion": 4, "mlistExt": ".1004", "meshMagic": 250203152, "motionIDsData": [72, 8]},
+	"OniWS": 		{"modelExt": ".251215606",  "texExt": ".251111100", "mmtrExt": ".251112995",  "nDir": "stm", "mdfExt": ".mdf2.51", "meshVersion": 4, "mdfVersion": 4, "mlistExt": ".1036", "meshMagic": 250203152, "motionIDsData": [72, 8]},
 	"Pragmata": 	{"modelExt": ".250925211",  "texExt": ".250813143", "mmtrExt": ".251112995",  "nDir": "STM", "mdfExt": ".mdf2.51", "meshVersion": 4, "mdfVersion": 4, "mlistExt": ".1057", "meshMagic": 250707828, "motionIDsData": [72, 8]},
 	"RE9": 			{"modelExt": ".250925211",  "texExt": ".250813143", "mmtrExt": ".251112994",  "nDir": "stm", "mdfExt": ".mdf2.51", "meshVersion": 4, "mdfVersion": 4, "mlistExt": ".1047", "meshMagic": 250904410, "motionIDsData": [72, 8]},
 }
@@ -1448,7 +1454,7 @@ dialogOptions = DialogOptions()
 
 DoubleClickTimer = namedtuple("DoubleClickTimer", "name idx timer")
 
-gamesList = [ "RE7", "RE7RT", "RE2", "RERT", "RE3", "RE4", "RE8", "MHRSunbreak", "DMC5", "SF6", "ReVerse", "ExoPrimal", "AJ_AAT", "DD2", "DRDR", "MHWs", "MHS3", "RE9", "Pragmata" ]
+gamesList = [ "RE7", "RE7RT", "RE2", "RERT", "RE3", "RE4", "RE8", "MHRSunbreak", "DMC5", "SF6", "ReVerse", "ExoPrimal", "AJ_AAT", "DD2", "DRDR", "MHWs", "MHS3", "OniWS", "RE9", "Pragmata" ]
 fullGameNames = [
 	"Resident Evil 7",
 	"Resident Evil 7 RT",
@@ -1467,6 +1473,7 @@ fullGameNames = [
 	"Dead Rising DR",
 	"Monster Hunter Wilds",
 	"Monster Hunter Stories 3",
+	"Onimusha: Way of the Sword",
 	"Resident Evil 9",
 	"Pragmata",
 ]
@@ -3171,8 +3178,8 @@ class motlistFile:
 		motionIDsOffset = bs.readUInt64()
 		self.name = readUnicodeStringAt(bs, bs.readUInt64())
 		bs.seek(8, 1)
-		# RE9 (1047) and later have an extra 8-byte field before numOffsets
-		if self.version >= 1047:
+		# OniWS (1036) and later have an extra 8-byte field before numOffsets
+		if self.version >= 1036:
 			bs.seek(8, 1)  # Skip uknOffset
 		numOffsets = bs.readUInt()
 		bs.seek(pointersOffset)
